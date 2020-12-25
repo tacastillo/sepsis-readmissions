@@ -7,7 +7,7 @@ WITH ages AS (
 diastolics AS (
 	WITH diastolic_items AS (
 		SELECT di.itemid 
-		FROM d_items di 
+		FROM mimiciii.d_items di 
 		WHERE di."label" ILIKE '%diastolic%'
 	)
 	SELECT c.hadm_id,
@@ -23,7 +23,7 @@ diastolics AS (
 systolics AS (
 	WITH systolic_items AS (
 		SELECT di.itemid 
-		FROM d_items di 
+		FROM mimiciii.d_items di 
 		WHERE di."label" ILIKE '%systolic%'
 	)
 	SELECT c.hadm_id,
@@ -145,7 +145,7 @@ temperature_stats AS (
 	WITH temperatures AS (
 			WITH temperature_items AS (
 				SELECT * 
-				FROM d_items di 
+				FROM mimiciii.d_items di 
 				WHERE di.itemid IN (223761, 678) --Carevue and Metavision Temperature Fahrenheit
 			)
 			SELECT * 
@@ -164,7 +164,7 @@ heart_rate_stats AS (
 	WITH heart_rates AS (
 		WITH heart_rate_items AS (
 			SELECT * 
-			FROM d_items di 
+			FROM mimiciii.d_items di 
 			WHERE di.itemid IN (220045, 211)
 		)
 		SELECT * 
@@ -183,7 +183,7 @@ respiratory_rate_stats AS (
 	WITH respiratory_rates AS (
 		WITH respiratory_rate_items AS (
 			SELECT * 
-			FROM d_items di 
+			FROM mimiciii.d_items di 
 			WHERE di.itemid IN (615, 618, 220210, 224690)
 		)
 		SELECT * 
