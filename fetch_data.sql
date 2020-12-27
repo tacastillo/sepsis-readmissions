@@ -18,6 +18,7 @@ diastolics AS (
 	INNER JOIN diastolic_items 
 	ON c.itemid = diastolic_items.itemid
 	WHERE c.valueuom = 'mmHg'
+    AND c.value::INT > 0
 	GROUP BY c.hadm_id
 ),
 systolics AS (
@@ -34,6 +35,7 @@ systolics AS (
 	INNER JOIN systolic_items 
 	ON c.itemid = systolic_items.itemid
 	WHERE c.valueuom = 'mmHg'
+    AND c.value::INT > 0
 	GROUP BY c.hadm_id
 ),
 bacteria_ratios AS (
@@ -177,6 +179,7 @@ heart_rate_stats AS (
 	AVG(heart_rates.value::FLOAT) AS mean_heart_rate,
 	MAX(heart_rates.value::FLOAT) AS max_heart_rate
 	FROM heart_rates
+    WHERE heart_rates.value::FLOAT > 0
 	GROUP BY heart_rates.hadm_id
 ),
 respiratory_rate_stats AS (
@@ -184,7 +187,7 @@ respiratory_rate_stats AS (
 		WITH respiratory_rate_items AS (
 			SELECT * 
 			FROM mimiciii.d_items di 
-			WHERE di.itemid IN (615, 618, 220210, 224690)
+			WHERE di.itemid IN (615, 220210)
 		)
 		SELECT * 
 		FROM mimiciii.chartevents c 
@@ -196,6 +199,7 @@ respiratory_rate_stats AS (
 	AVG(respiratory_rates.value::FLOAT) AS mean_respiratory_rate,
 	MAX(respiratory_rates.value::FLOAT) AS max_respiratory_rate
 	FROM respiratory_rates
+    WHERE respiratory_rates.value::FLOAT > 0
 	GROUP BY respiratory_rates.hadm_id
 ),
 pneumonia_stats AS (
@@ -396,6 +400,7 @@ presepsis_admissions AS (
 	AND a.hospital_expire_flag = 0
 )
 SELECT
+    DISTINCT ON (adm.hadm_id)
 	adm.hadm_id,
 	diastolics.diastolic_min,
 	diastolics.diastolic_mean,

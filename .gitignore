@@ -1,2 +1,8 @@
 .ipynb_checkpoints
 config.json
+
+app/data.pickle
+
+**/__pycache__
+
+.DS_Store
